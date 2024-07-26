@@ -1,6 +1,5 @@
 package com.example.demo.person;
 
-import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
@@ -26,57 +25,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @Getter
-@Setter
 @NoArgsConstructor
-public class Person {
-
-    public Person(String firstName, String lastName, String email){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-    
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
+public class PersonDTO {
     @NotBlank(message = "firstName é obrigatório")
-    @Length(min = 3, max = 100, message = "O nome deverá ter no máximo {max} caracteres")
+    @Length(min = 3, max = 35, message = "O nome deverá ter no máximo {max} caracteres")
     private String firstName;
-
     @NotBlank(message = "lastName é obrigatório")
     private String lastName;
-
     @NotNull
     @Email
-    @NotBlank
     private String email;
-
     @CPF
     private String cpf;
 
-    private boolean administrador = false;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
-
-
-    @OneToMany(mappedBy = "person")
-    private List<Phone> phones;
-
-
-    //mappedBy é o nome da variavel na outra classe
-    @ManyToMany(mappedBy = "people")
-    private List<Project> projects;
-
-    
-    
-
+    public Person toPerson(){
+        return new Person(firstName, lastName, email);
+    }
 
 }
-
-

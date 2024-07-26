@@ -36,8 +36,9 @@ public class PersonController extends ControllerWithValidation {
 
     @PostMapping("/people/")
     @ResponseStatus(HttpStatus.CREATED)
-    public Person save(@Valid @RequestBody Person person) {
-        return personService.save(person);
+    public PersonResponseDTO save(@Valid @RequestBody PersonDTO person) {
+        //return personService.save(person.toPerson());
+        return PersonResponseDTO.toDTO(personService.save(person.toPerson()));
     }  
 
 
